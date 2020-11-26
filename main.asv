@@ -1,0 +1,1 @@
+bankData = loadBankData('bank-full.csv')
