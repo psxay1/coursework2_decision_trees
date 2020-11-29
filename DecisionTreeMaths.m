@@ -13,8 +13,9 @@ classdef DecisionTreeMaths
             disp(entropy)
         end
         
+        % calculates gain
         function gain=calculateGain(childNodes)
-            %calculates gain
+            % Information Gain = entropy(parent) – [average entropy(children)]
             gain = 'dummy gain value';
             disp(gain)
         end
