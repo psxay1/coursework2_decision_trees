@@ -58,7 +58,7 @@ classdef DataProcessing
             % Similar to bankLabelProcessing_Class but for the regression
         end
         
-        function data=normalizeData_Reg(data)
+        function data=normalizeData_Reg_DICK(data)
             % Similar to normalizeData_Class but for the regression
         end
     end
