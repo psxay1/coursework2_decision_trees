@@ -5,6 +5,7 @@ classdef DecisionTreeMaths
     methods (Static)
         
         function entropy=calculateEntropy(labels)
+            % Dion: does labels === [0 1] or [1 0] now?
             n_positive = nnz(labels == 1);
             n_negative = size(labels, 1) - n_positive;
             totalSize = n_positive + n_negative;
