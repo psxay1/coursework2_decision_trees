@@ -21,16 +21,11 @@ classdef ID3Helpers
             %information gain = entropy(parent) - [average entropy(children)]
             
     %{
-         example tree
 
-        marital status               <--Parent (feature)
-         /  |       |   \ 
-        /   |       |    \
-       /    |       |     \
-      /     |       |      \
-     dvcd single  married  unknown   <--Children (feature values) -- we
-     calculate average entropy of these
-    %}
+        marital status
+    
+    
+    }%
             
     methods (Static)
         
