@@ -67,9 +67,8 @@ classdef DataProcessing
             %unique(data.poutcome)
 %             data.poutcome = DataProcessing.labelEncoding(data.poutcome,{'unknown','success','failure','other'},[0 1 2 3]);
             data.poutcome = DataProcessing.matrixEncoding(data.poutcome);
-            %unique(data.y)
-%             data.y = DataProcessing.labelEncoding(data.y,{'no','yes'},[0 1]);
-            data.y  = DataProcessing.matrixEncoding(data.y);
+            %unique(data.y)             data.y = DataProcessing.labelEncoding(data.y,{'no','yes'},[0 1]);
+%             data.y  = DataProcessing.matrixEncoding(data.y);
         end
         
         function data=normalizeData_Class(data)

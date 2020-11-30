@@ -20,7 +20,7 @@ classdef DecisionTreeMaths
         end
         
         function gain = calculateGain()
-           % Information Gain H(S) - weighted gain
+           % Information Gain H(S) -  
         end
         
     end

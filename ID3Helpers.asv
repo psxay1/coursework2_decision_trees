@@ -1,0 +1,18 @@
+classdef ID3Helpers
+    
+    properties
+    end
+    methods (Static)
+        
+        function splitData(feature, labels)
+            values = unique(feature);
+            for i=1:height(values)
+                for j=1:height(feature)
+                    if isequal(values(i, :), feature(j, :))
+                        feature_arr{i, j} = [feature(j, :), labels(j, :)];
+                    end
+                end 
+            end   
+        end
+    end
+end
