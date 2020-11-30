@@ -34,21 +34,23 @@ classdef ID3Helpers
             
     methods (Static)
         
-        function bucketHolder = splitData(featureColumn, labels)
+        function bucketHolder = splitData(data)
+            labels = data.labels;
+            featureColumn = data.data;
             values = unique(featureColumn);
             
             for i=1:height(values)
                 indices = ismember(featureColumn, values(i, :));
                 featureBucket = featureColumn(indices, :);
                 labelBucket = labels(indices, :);
-                filteredTable = [featureBucket, labelBucket];
-                bucketHolder{i} = filteredTable;
+                filteredStruct(i) = struct('data', featureBucket, 'dataType', data.dataType, 'labels', labelBucket);
+                bucketHolder{i} = filteredStruct;
             end
         end
         
         function entropy=calculateEntropy(subset)
-            n_positive = height(subset(subset.yes == 1, :));
-            n_negative = size(subset, 1) - n_positive;
+            n_positive = height(subset.labels(subset.labels.yes == 1, :));
+            n_negative = size(subset.labels, 1) - n_positive;
             totalSize = n_positive + n_negative;
             p_positive = n_positive/totalSize;
             p_negative = n_negative/totalSize;

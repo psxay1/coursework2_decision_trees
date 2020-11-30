@@ -12,6 +12,7 @@ tableData = DataProcessing.convertToStructure_Class(bankData);
 % split on the best one by selecting the best information gain/ lowest
 % entropy/ purest subset
 
-children = ID3Helpers.splitData(tableData{4}.data, tableData{4}.labels);
-DecisionTreeMaths.calculateEntropy(children{1});
+% children = ID3Helpers.splitData(tableData{5}.data, tableData{5}.labels);
+children = ID3Helpers.splitData(tableData{2});
+ID3Helpers.calculateEntropy(children{1});
 disp("ljlobndslojnsdgojnsf")
