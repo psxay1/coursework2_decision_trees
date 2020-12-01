@@ -56,5 +56,11 @@ classdef ID3Helpers
             p_negative = n_negative/totalSize;
             entropy = -(p_positive*log2(p_positive) + p_negative*log2(p_negative));
         end
+        function variance=calculateVariance(sample)
+            
+            mean = sum(sample)/length(sample);
+            variance = sum ((sample-mean)^2)/length(sample);
+            
+        end   
     end
 end

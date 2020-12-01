@@ -64,7 +64,11 @@ classdef DataProcessing
 
 % Regression        
         function data=wineFeatureProcessing_Reg(data)
+            
             % Similar to bankLabelProcessing_Class but for the regression
+            % rows = (data.quality == 5);
+            % average = (min(data.quality)
+            % data(rows, :);
         end
          
     end

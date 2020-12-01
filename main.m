@@ -1,4 +1,6 @@
 bankData = getBankData();
+wineData = getWineData();
+
 % featuresTable = bankData(1:end, 1:16);
 % labelsTable = bankData(: , 17);
 % features = featuresTable{:,:};
