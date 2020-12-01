@@ -4,28 +4,38 @@ classdef DecisionTreeMaths
     end
     methods (Static)
         
-        function entropy=calculateEntropy(labels)
-            n_positive = nnz(labels == 1);
-            n_negative = size(labels, 1) - n_positive;
-            totalSize = n_positive + n_negative;
-            p_positive = n_positive/totalSize;
-            p_negative = n_negative/totalSize;
-            entropy = -(p_positive*log2(p_positive) + p_negative*log2(p_negative));
-            disp(entropy)
+        % calculates Information Gain
+        function informationGain = calculateInformationGain(parent, children)
+            S = height(parent{1}.data);
+            for index=1:length(children)
+                child = children{index};
+                Hsv = ID3Helpers.calculateEntropy(child);
+                Sv = height(child.data);
+                % Sv/S[H(Sv)]
+                weightedEntropy = (Sv/S)*Hsv;
+                % Adding weighted entropies of the children nodes i.e.
+                % weighted gain
+                weightedGain = weightedEntropy + weightedEntropy;
+            end
+            % Entropy of the parent node
+            Hs= ID3Helpers.calculateEntropy(parent{1});
+            informationGain = Hs - weightedGain;
         end
         
-        % calculates weighted gain
-        function weightedGain = calculateWeightedEntropy(childNodes)
-            % E Sv/S[H(Sv)]
+        function chooseAttribute(tableData)
+            % This would give the column with best gain
+            bestGain = 1;
+            for i=1:length(tableData)
+                if tableData{i}.dataType == "categorical"
+                    children = ID3Helpers.splitData(tableData{i});
+                    informationGain = DecisionTreeMaths.calculateInformationGain(tableData, children);
+                    if informationGain < bestGain
+                        bestGain = informationGain;
+                    end
+                end
+            end
+            disp(bestGain)
         end
         
-        function gain = calculateGain()
-           % Information Gain H(S) -  
-        end
-        
-    end
-    
-    function chooseAttribute()
-           % This would give the column with best gain
     end
 end

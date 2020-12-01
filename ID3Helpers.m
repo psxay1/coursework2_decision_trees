@@ -44,7 +44,7 @@ classdef ID3Helpers
                 featureBucket = featureColumn(indices, :);
                 labelBucket = labels(indices, :);
                 filteredStruct(i) = struct('data', featureBucket, 'dataType', data.dataType, 'labels', labelBucket);
-                bucketHolder{i} = filteredStruct;
+                bucketHolder{i} = horzcat(filteredStruct(i));
             end
         end
         
@@ -55,6 +55,9 @@ classdef ID3Helpers
             p_positive = n_positive/totalSize;
             p_negative = n_negative/totalSize;
             entropy = -(p_positive*log2(p_positive) + p_negative*log2(p_negative));
+            if isnan(entropy)
+                entropy = 0;
+            end
         end
     end
 end

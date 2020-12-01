@@ -1,6 +1,6 @@
 function data = getBankData()
     bankData = loadBankData('bank-full.csv');
-%     testBankData = bankData(83:92, :);
-% data = DataProcessing.bankFeatureProcessing_Class(testBankData);
+    testBankData = bankData(1:10, :);
     data = DataProcessing.bankFeatureProcessing_Class(bankData);
+%     data = DataProcessing.normalizeData_Class(encodedBankData);
 end

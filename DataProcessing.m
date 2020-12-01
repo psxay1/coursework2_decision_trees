@@ -66,6 +66,5 @@ classdef DataProcessing
         function data=wineFeatureProcessing_Reg(data)
             % Similar to bankLabelProcessing_Class but for the regression
         end
-         
     end
 end
