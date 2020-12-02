@@ -1,5 +1,4 @@
 bankData = getBankData();
-tableData = DataProcessing.convertToStructure(bankData);
 
 % iterate attributes tableData{attributes}.data
 % DecisionTreeMaths.calculateEntropy(tableData{1}.labels);
@@ -8,7 +7,7 @@ tableData = DataProcessing.convertToStructure(bankData);
 % split on the best one by selecting the best information gain/ lowest
 % entropy/ purest subset
 
-[children, gain] = DecisionTreeMaths.chooseAttribute(tableData, bankData);
+[children, gain] = DecisionTreeMaths.chooseAttribute(bankData);
 totalSize = 0;
 for i=1: length(children)
     totalSize = totalSize + height(children{i});

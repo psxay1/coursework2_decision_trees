@@ -28,7 +28,6 @@ classdef DecisionTreeMaths
             end
             % Entropy of the parent node
             Hs= ID3Helpers.entropy(n_positive, n_negative);
-            Hs = ID3Helpers.calculateEntropy
             informationGain = Hs - weightedGain;
         end
         
@@ -37,9 +36,9 @@ classdef DecisionTreeMaths
             bestGain = 0;
             columnIndex = 0;
             bestChildren = {};
-            for i=1:length(structuredData)
+            for i=1:width(tabularData)-1
                 informationGain = 0;
-                if structuredData{i}.dataType == "categorical"
+%                 if structuredData{i}.dataType == "categorical"
                     children = ID3Helpers.splitData(i, tabularData);
                     informationGain = DecisionTreeMaths.calculateInformationGain(children);
                 else

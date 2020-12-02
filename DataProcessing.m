@@ -21,23 +21,7 @@ classdef DataProcessing
             data = table(data);
             data = onehotencode(data);
         end
-        
-        function tableData = convertToStructure(data)
-            columnNames = data.Properties.VariableNames;
-             for i=1:length(columnNames)-1
-                 column_data = data(:, i);
-                 labels = data(:, 17);
-                 if class(table2array(data(:, i))) == "table"
-                    dataType = "categorical";
-                    column_data = table2array(column_data);
-                 else
-                     dataType = "numeric";
-                 end
-                 S(i) = struct('data', column_data, 'dataType', dataType, 'labels', labels, 'column_name', columnNames{i});
-                 tableData{i} = horzcat(S(i));
-             end
-        end
- 
+         
         function data=bankFeatureProcessing_Class(data)
             %unique(data.job)
             %data.job = DataProcessing.labelEncoding(data.job,{'admin.','blue-collar','entrepreneur','housemaid','management','retired','self-employed','services','student','technician','unemployed','unknown'},[0 1 2 3 4 5 6 7 8 9 10 11]);
@@ -51,15 +35,6 @@ classdef DataProcessing
             data.month = DataProcessing.matrixEncoding(data.month);
             data.poutcome = DataProcessing.matrixEncoding(data.poutcome);
             data.y = DataProcessing.labelEncoding(data.y,{'no','yes'},[0 1]);
-        end
-        
-        function data=normalizeData_Class(data)
-            data.age = zscore(data.age);
-            data.balance = zscore(data.balance);
-            data.duration = zscore(data.duration);
-            data.previous = zscore(data.previous);
-            data.pdays = zscore(data.pdays);
-            data.campaign = zscore(data.campaign);
         end
     end
 end

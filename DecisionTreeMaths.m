@@ -31,14 +31,16 @@ classdef DecisionTreeMaths
             informationGain = Hs - weightedGain;
         end
         
-        function [bestChildren, bestGain, columnIndex] = chooseAttribute(structuredData, tabularData)
+        function [bestChildren, bestGain, columnIndex] = chooseAttribute(tabularData)
             % This would give the column with best gain
             bestGain = 0;
             columnIndex = 0;
             bestChildren = {};
-            for i=1:length(structuredData)
+            for i=1:width(tabularData)-1
                 informationGain = 0;
-                if structuredData{i}.dataType == "categorical"
+                % class for a categorical column would be table (because of
+                % onehotencoding) and for numerical it would double
+                if class(tabularData{:,i}) == "table"
                     children = ID3Helpers.splitData(i, tabularData);
                     informationGain = DecisionTreeMaths.calculateInformationGain(children);
                 else
