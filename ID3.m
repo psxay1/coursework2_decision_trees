@@ -6,11 +6,11 @@ classdef ID3
     methods (Static)
         
         function Tree(data)
-            splitColumns = [];
-            [children, gain, columnIndex] = DecisionTreeMaths.chooseAttribute(data, []);
-            splitColumns = splitColumns + columnIndex;
+            [children, gain, columnIndex] = DecisionTreeMaths.chooseAttribute(data);
+            disp(gain);
+            disp(children);
             for childIndex=1:length(children)
-                 [children, gain, columnIndex] = Tree(children{childIndex});
+                ID3.Tree(children{childIndex});
             end
         end
     end

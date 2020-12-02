@@ -37,7 +37,6 @@ classdef DecisionTreeMaths
             columnIndex = 0;
             bestChildren = {};
             for i=1:width(tabularData)-1
-                informationGain = 0;
                 % class for a categorical column would be table (because of
                 % onehotencoding) and for numerical it would double
                 if class(tabularData{:,i}) == "table"

@@ -7,10 +7,5 @@ bankData = getBankData();
 % split on the best one by selecting the best information gain/ lowest
 % entropy/ purest subset
 
-[children, gain] = DecisionTreeMaths.chooseAttribute(bankData);
-totalSize = 0;
-for i=1: length(children)
-    totalSize = totalSize + height(children{i});
-end
-disp(totalSize);
-% ID3.Tree(tableData)
+% [children, gain] = DecisionTreeMaths.chooseAttribute(bankData);
+ID3.Tree(bankData);
