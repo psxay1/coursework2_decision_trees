@@ -8,5 +8,5 @@ tableData = DataProcessing.convertToStructure_Class(bankData);
 % split on the best one by selecting the best information gain/ lowest
 % entropy/ purest subset
 
-DecisionTreeMaths.chooseAttribute(tableData);
+[children, gain] = DecisionTreeMaths.chooseAttribute(tableData);
 disp("ljlobndslojnsdgojnsf")

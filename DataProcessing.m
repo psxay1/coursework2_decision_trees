@@ -6,7 +6,7 @@ classdef DataProcessing
         
 % Base Methods        
         function new_variable = labelEncoding(variable,values_set,numbers)
-            [rows,col] = size(variable);
+            [rows,~] = size(variable);
             new_variable = zeros(rows,1);
             
             for i=1:length(values_set)
@@ -28,6 +28,7 @@ classdef DataProcessing
                  column_data = table2array(data(:, i));
                  if class(column_data) == "table"
                     dataType = "categorical";
+                    column_data = table2array(column_data);
                  else
                      dataType = "numeric";
                  end
@@ -35,8 +36,6 @@ classdef DataProcessing
                  tableData{i} = horzcat(S(i));
              end
         end
-        
-% Classification
 
         function data=bankFeatureProcessing_Class(data)
             %unique(data.job)
@@ -50,7 +49,7 @@ classdef DataProcessing
             data.contact = DataProcessing.matrixEncoding(data.contact);
             data.month = DataProcessing.matrixEncoding(data.month);
             data.poutcome = DataProcessing.matrixEncoding(data.poutcome);
-            data.y  = DataProcessing.matrixEncoding(data.y);
+            data.y = DataProcessing.labelEncoding(data.y,{'no','yes'},[0 1]);
         end
         
         function data=normalizeData_Class(data)
@@ -60,11 +59,6 @@ classdef DataProcessing
             data.previous = zscore(data.previous);
             data.pdays = zscore(data.pdays);
             data.campaign = zscore(data.campaign);
-        end
-
-% Regression        
-        function data=wineFeatureProcessing_Reg(data)
-            % Similar to bankLabelProcessing_Class but for the regression
         end
     end
 end

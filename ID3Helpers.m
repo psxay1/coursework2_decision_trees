@@ -35,22 +35,46 @@ classdef ID3Helpers
     methods (Static)
         
         function bucketHolder = splitData(data)
-            labels = data.labels;
-            featureColumn = data.data;
+            labels = array2table(data.labels);
+            featureColumn = array2table(data.data);
             values = unique(featureColumn);
             
             for i=1:height(values)
                 indices = ismember(featureColumn, values(i, :));
                 featureBucket = featureColumn(indices, :);
                 labelBucket = labels(indices, :);
-                filteredStruct(i) = struct('data', featureBucket, 'dataType', data.dataType, 'labels', labelBucket);
+                filteredStruct(i) = struct('data', table2array(featureBucket), 'dataType', data.dataType, 'labels', table2array(labelBucket));
                 bucketHolder{i} = horzcat(filteredStruct(i));
             end
         end
         
+        function bucketHolder = splitNumericData(features, labels, splitIndex)
+            leftFeatures = features(1:splitIndex);
+            leftLabels = labels(1:splitIndex);
+            leftFeatures = leftFeatures.';
+            bucketHolder{1} = struct('data', leftFeatures, 'dataType', 'numeric', 'labels', leftLabels);
+            
+            rightFeatures = features(splitIndex+1:end);
+            rightLabels = labels(splitIndex+1:end);
+            rightFeatures = rightFeatures.';
+            bucketHolder{2} = struct('data', rightFeatures, 'dataType', 'numeric', 'labels', rightLabels);
+        end
+        
         function entropy=calculateEntropy(subset)
-            n_positive = height(subset.labels(subset.labels.yes == 1, :));
+            n_positive = height(subset.labels(subset.labels==1));
             n_negative = size(subset.labels, 1) - n_positive;
+            totalSize = n_positive + n_negative;
+            p_positive = n_positive/totalSize;
+            p_negative = n_negative/totalSize;
+            entropy = -(p_positive*log2(p_positive) + p_negative*log2(p_negative));
+            if isnan(entropy)
+                entropy = 0;
+            end
+        end
+        
+        function entropy = calculateEntropyNumeric(labels)
+            n_positive = height(labels(labels==1));
+            n_negative = size(labels,1) - n_positive;
             totalSize = n_positive + n_negative;
             p_positive = n_positive/totalSize;
             p_negative = n_negative/totalSize;
