@@ -34,54 +34,104 @@ classdef ID3Helpers
             
     methods (Static)
         
-        function bucketHolder = splitData(data)
-            labels = array2table(data.labels);
-            featureColumn = array2table(data.data);
-            values = unique(featureColumn);
+        function tables = splitData(index, tabularData)
             
-            for i=1:height(values)
-                indices = ismember(featureColumn, values(i, :));
-                featureBucket = featureColumn(indices, :);
-                labelBucket = labels(indices, :);
-                filteredStruct(i) = struct('data', table2array(featureBucket), 'dataType', data.dataType, 'labels', table2array(labelBucket));
-                bucketHolder{i} = horzcat(filteredStruct(i));
+            % get unique types of data in column
+            feature = tabularData{:, index};
+            uniqueValues = unique(feature);
+            filteredRowIndices = [];
+            
+            for i=1:height(uniqueValues)
+                for j=1:height(feature) 
+                    if isequal(feature(j,:), uniqueValues(i,:))
+                        filteredRowIndices(end+1) = j;
+                    end
+                end
+                filteredTable = tabularData(filteredRowIndices, :);
+                tables{i} = horzcat(filteredTable);
+                filteredRowIndices = [];
             end
         end
         
-        function bucketHolder = splitNumericData(features, labels, splitIndex)
-            leftFeatures = features(1:splitIndex);
-            leftLabels = labels(1:splitIndex);
-            leftFeatures = leftFeatures.';
-            bucketHolder{1} = struct('data', leftFeatures, 'dataType', 'numeric', 'labels', leftLabels);
+        function tables = splitNumData(index, tabularData)
             
-            rightFeatures = features(splitIndex+1:end);
-            rightLabels = labels(splitIndex+1:end);
-            rightFeatures = rightFeatures.';
-            bucketHolder{2} = struct('data', rightFeatures, 'dataType', 'numeric', 'labels', rightLabels);
+            bestGain = 0;
+            bestLeftChild = array2table(zeros(0,17));
+            bestLeftChild.Properties.VariableNames = tabularData.Properties.VariableNames;
+            
+            bestRightChild = array2table(zeros(0,17));
+            bestRightChild.Properties.VariableNames = tabularData.Properties.VariableNames;
+            
+            %proessing feature data for getting best numeric split
+            
+            %sort table on feature column
+            featureArr = table2array(tabularData(:,index)).';
+            [featureArr, ~] = sort(featureArr, 'ascend');
+            avgFValues = mean([featureArr(1:end-1);featureArr(2:end)]);
+            avgFValues = avgFValues.';
+            avgFValues = array2table(avgFValues);
+            
+            filteredRowIndicesLTE = [];
+            filteredRowIndicesGT = [];
+            
+            for i=1:height(avgFValues)
+                for j=1:height(tabularData)
+                    if tabularData(j,index).Variables<=avgFValues(i,:).Variables
+                       filteredRowIndicesLTE(end+1) = j; 
+                    else
+                        filteredRowIndicesGT(end+1) = j;
+                    end
+                end
+                
+                % Get filtered left and right children
+                filteredTableLTE = tabularData(filteredRowIndicesLTE, :);
+                filteredTableGT = tabularData(filteredRowIndicesGT, :);
+                
+                filteredRowIndicesLTE = [];
+                filteredRowIndicesGT = [];
+                
+                % Parent entropy
+                S = height(tabularData);
+                Hs = ID3Helpers.calculateEntropy(tabularData);
+                
+                % Left weighted child entropy
+                Svl = height(filteredTableLTE);
+                Hsvl = ID3Helpers.calculateEntropy(filteredTableLTE);
+                % leftWeightedEntropy or lwe =(Sv/S)H(Sv)
+                lwe = (Svl/S)*Hsvl;
+                
+                % Right weighted child entropy
+                Svr = height(filteredTableGT);
+                Hsvr = ID3Helpers.calculateEntropy(filteredTableGT);
+                % rightWeightedEntropy or rwe =(Sv/S)H(Sv)
+                rwe = (Svr/S)*Hsvr;
+                
+                % Information gain
+                ig = Hs - (lwe + rwe);
+                
+                if ig>bestGain
+                    bestLeftChild = filteredTableLTE;
+                    bestRightChild = filteredTableGT;
+                end
+            end
+            tables{1} = horzcat(bestLeftChild);
+            tables{2} = horzcat(bestRightChild);
         end
         
-        function entropy=calculateEntropy(subset)
-            n_positive = height(subset.labels(subset.labels==1));
-            n_negative = size(subset.labels, 1) - n_positive;
-            totalSize = n_positive + n_negative;
-            p_positive = n_positive/totalSize;
-            p_negative = n_negative/totalSize;
-            entropy = -(p_positive*log2(p_positive) + p_negative*log2(p_negative));
+        function [entropy, n_positive, n_negative]=calculateEntropy(subset)
+            n_positive = height(subset.y(subset.y==1));
+            n_negative = size(subset, 1) - n_positive;
+            entropy = ID3Helpers.entropy(n_positive, n_negative);
             if isnan(entropy)
                 entropy = 0;
             end
         end
         
-        function entropy = calculateEntropyNumeric(labels)
-            n_positive = height(labels(labels==1));
-            n_negative = size(labels,1) - n_positive;
+        function entropy = entropy(n_positive, n_negative)
             totalSize = n_positive + n_negative;
             p_positive = n_positive/totalSize;
             p_negative = n_negative/totalSize;
             entropy = -(p_positive*log2(p_positive) + p_negative*log2(p_negative));
-            if isnan(entropy)
-                entropy = 0;
-            end
         end
     end
 end

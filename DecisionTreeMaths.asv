@@ -28,6 +28,7 @@ classdef DecisionTreeMaths
             end
             % Entropy of the parent node
             Hs= ID3Helpers.entropy(n_positive, n_negative);
+            Hs = ID3Helpers.calculateEntropy
             informationGain = Hs - weightedGain;
         end
         

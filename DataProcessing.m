@@ -22,21 +22,22 @@ classdef DataProcessing
             data = onehotencode(data);
         end
         
-        function tableData = convertToStructure_Class(data)
+        function tableData = convertToStructure(data)
             columnNames = data.Properties.VariableNames;
              for i=1:length(columnNames)-1
-                 column_data = table2array(data(:, i));
-                 if class(column_data) == "table"
+                 column_data = data(:, i);
+                 labels = data(:, 17);
+                 if class(table2array(data(:, i))) == "table"
                     dataType = "categorical";
                     column_data = table2array(column_data);
                  else
                      dataType = "numeric";
                  end
-                 S(i) = struct('data', column_data, 'dataType', dataType, 'labels', table2array(data(:, 17)));
+                 S(i) = struct('data', column_data, 'dataType', dataType, 'labels', labels, 'column_name', columnNames{i});
                  tableData{i} = horzcat(S(i));
              end
         end
-
+ 
         function data=bankFeatureProcessing_Class(data)
             %unique(data.job)
             %data.job = DataProcessing.labelEncoding(data.job,{'admin.','blue-collar','entrepreneur','housemaid','management','retired','self-employed','services','student','technician','unemployed','unknown'},[0 1 2 3 4 5 6 7 8 9 10 11]);
