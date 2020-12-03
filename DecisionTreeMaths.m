@@ -53,7 +53,7 @@ classdef DecisionTreeMaths
                     minEntropy = min(childEntropies);
                     valueIndex = find(childEntropies==minEntropy);
                     minEntropyChild = children{valueIndex};
-                    featureCol = minEntropyChild{:, i}
+                    featureCol = minEntropyChild{:, i};
                     value = unique(featureCol);
                     children = ID3Helpers.splitOnValue(value, i, tabularData);
                 else

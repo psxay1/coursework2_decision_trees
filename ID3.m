@@ -7,21 +7,27 @@ classdef ID3
         
         function Tree(data)
             [children, gain, columnIndex] = DecisionTreeMaths.chooseAttribute(data);
-            if gain == 0
-                return
-            end
-            disp(gain);
-            disp(children);
-            for childIndex=1:length(children)
-                ID3.plotGraph(children{childIndex})
-                ID3.Tree(children{childIndex});
+            lChild = children{1};
+            rChild = children{2};
+            if checkForLeaf(lchild) == true
+                1;
+            elseif checkForLeaf(rchild) == true
+                1;
+            else
+                ID3.Tree(lChild);
+                ID3.Tree(rChild);
             end
         end
         
-        function plotGraph(data)
-            for i=1:width(data)
-                plot(data{:,i}, 'r.', 'MarkerSize', 20);
-                disp("*******");
+        function isLeafNode = checkForLeaf(child)
+            
+            labels = child(:,end);
+            uniqueValues = unique(labels);
+            numberOfUniqueVals = length(uniqueValues);
+            if numberOfUniqueVals > 1
+                isLeafNode = false;
+            else
+                isLeafNode = true;
             end
         end
     end

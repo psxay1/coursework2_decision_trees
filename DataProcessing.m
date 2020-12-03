@@ -36,5 +36,11 @@ classdef DataProcessing
             data.poutcome = DataProcessing.matrixEncoding(data.poutcome);
             data.y = DataProcessing.labelEncoding(data.y,{'no','yes'},[0 1]);
         end
+        
+%         function tree = convertToStructure(table)
+%            
+%             tree.op = 
+%             
+%         end
     end
 end
