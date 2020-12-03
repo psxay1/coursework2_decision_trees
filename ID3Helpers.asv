@@ -58,18 +58,19 @@ classdef ID3Helpers
             lRowIndices = [];
             rRowIndices = [];
             
-            for i=1:height(tabularData)
-                if isequal(tabularData{i,columnIndex}, value)
+            for i=1:height(featureArr)
+                if isequal(featureArr(i,:), value)
                     lRowIndices(end+1) = i;
                 else
-                    rRowIndices(end+1) = i; 
+                    rRowIndices(end+1) = i;
+                    
                 end
             end
             lTable = tabularData(lRowIndices, :);
-            rTable = tabularData(rRowIndices, :);
+            rTable = tabularData(lRowIndices, :);
             
             children{1} = horzcat(lTable);
-            children{2} = horzcat(rTable);
+            children{2} = horzcat(lTable);
         end
         
         function tables = splitNumData(index, tabularData)
