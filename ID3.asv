@@ -19,7 +19,7 @@ classdef ID3
                 end
             end
             
-                
+            if 
             
             disp("**********")
                 

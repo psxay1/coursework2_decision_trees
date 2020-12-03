@@ -37,7 +37,7 @@ classdef DecisionTreeMaths
             
         end
         
-        function tree = chooseAttribute(tabularData)
+        function [bestChildren, bestGain, columnIndex] = chooseAttribute(tabularData)
             % This would give the column with best gain
             bestGain = 0;
             columnIndex = 0;
@@ -57,18 +57,20 @@ classdef DecisionTreeMaths
                     featureCol = minEntropyChild{:, i};
                     value = unique(featureCol);
                     children = ID3Helpers.splitOnValue(value, i, tabularData);
+                    tree = DataProcessing.convertToStruct(tabularData.Properties.VariableNames{i}, children, tabularData{i, end}, i, informationGain);
+                    disp(tree);
                 else
                     children = ID3Helpers.splitNumData(i, tabularData);
                     [informationGain, ~] = DecisionTreeMaths.calculateInformationGain(children);
-                    
+                    tree = DataProcessing.convertToStruct(tabularData.Properties.VariableNames{i}, children, tabularData{i, end}, i, informationGain);
+                    disp(tree);
                 end
-                if informationGain > bestGain
-                    bestGain = informationGain;
-                    columnIndex = i;
-                    bestChildren = children;
-                end
+%                 if informationGain > bestGain
+%                     bestGain = informationGain;
+%                     columnIndex = i;
+%                     bestChildren = children;
+%                 end
             end
-            tree = DataProcessing.convertToStruct(tabularData.Properties.VariableNames{columnIndex}, bestChildren, tabularData{columnIndex, end}, columnIndex, bestGain);
         end
     end
 end
