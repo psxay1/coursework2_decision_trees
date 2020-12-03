@@ -71,12 +71,29 @@ classdef ID3Helpers
             avgFValues = mean([featureArr(1:end-1);featureArr(2:end)]);
             avgFValues = avgFValues.';
             avgFValues = array2table(avgFValues);
+            
+            filteredRowIndicesLTE = [];
+            filteredRowIndicesGT = [];
+%             tabularData(ismember(tabularData.job, valueIndex), :)
 
+            
             for i=1:height(avgFValues)
+                for j=1:height(tabularData)
+                    if tabularData(j,index).Variables<=avgFValues(i,:).Variables
+                       filteredRowIndicesLTE(end+1) = j; 
+                    else
+                        filteredRowIndicesGT(end+1) = j;
+                    end
+                end
+                
+                filteredTableLTE = tabularData(ismember(tabularData.job, valueIndex), :)
                 
                 % Get filtered left and right children
-                filteredTableLTE = tabularData(tabularData{:,index}<=avgFValues(i,:).Variables, :);
-                filteredTableGT = tabularData(tabularData{:,index}>avgFValues(i,:).Variables, :);
+                filteredTableLTE = tabularData(filteredRowIndicesLTE, :);
+                filteredTableGT = tabularData(filteredRowIndicesGT, :);
+                
+                filteredRowIndicesLTE = [];
+                filteredRowIndicesGT = [];
                 
                 % Parent entropy
                 S = height(tabularData);

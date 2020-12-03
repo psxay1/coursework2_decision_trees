@@ -7,7 +7,6 @@ classdef ID3
         
         function Tree(data)
             tree = DecisionTreeMaths.chooseAttribute(data);
-            disp(tree);
             lChild = {};
             rChild = {};
             
@@ -19,25 +18,32 @@ classdef ID3
                 end
             end
             
-            if 
+            
             
             disp("**********")
-                
-%             lChild = children{1};
-%             rChild = children{2};
-%             if checkForLeaf(lchild) == true
-%                 1;
-%             elseif checkForLeaf(rchild) == true
-%                 1;
-%             else
-%                 ID3.Tree(lChild);
-%                 ID3.Tree(rChild);
-%             end
+            
+        % Return a leaf node or a split the data again if not a leaf
+        % node
+            if ID3.checkForLeaf(lChild) == true
+                prediction = unique(lChild.y);
+                leafNode = DataProcessing.convertToStruct("", [], prediction, tree.attribute, tree.threshold);
+                disp(leafNode);
+            else
+                ID3.Tree(lChild);
+            end
+            
+            if ID3.checkForLeaf(rChild) == true
+                prediction = unique(rChild.y);
+                leafNode = DataProcessing.convertToStruct("", [], prediction, tree.attribute, tree.threshold);
+                disp(leafNode);
+            else
+                ID3.Tree(rChild);
+            end
         end
         
         function isLeafNode = checkForLeaf(child)
             
-            labels = child(:,end);
+            labels = child.y;
             uniqueValues = unique(labels);
             numberOfUniqueVals = length(uniqueValues);
             if numberOfUniqueVals > 1

@@ -53,10 +53,9 @@ classdef DecisionTreeMaths
                     % categorical data
                     minEntropy = min(childEntropies);
                     valueIndex = find(childEntropies==minEntropy);
-                    minEntropyChild = children{valueIndex};
-                    featureCol = minEntropyChild{:, i};
-                    value = unique(featureCol);
-                    children = ID3Helpers.splitOnValue(value, i, tabularData);
+                    children = {};
+                    children{1} = horzcat(tabularData(ismember(tabularData.job, valueIndex), :));
+                    children{2} = horzcat(tabularData(~ismember(tabularData.job, valueIndex), :));
                 else
                     children = ID3Helpers.splitNumData(i, tabularData);
                     [informationGain, ~] = DecisionTreeMaths.calculateInformationGain(children);
@@ -68,7 +67,7 @@ classdef DecisionTreeMaths
                     bestChildren = children;
                 end
             end
-            tree = DataProcessing.convertToStruct(tabularData.Properties.VariableNames{columnIndex}, bestChildren, tabularData{columnIndex, end}, columnIndex, bestGain);
+            tree = DataProcessing.convertToStruct(tabularData.Properties.VariableNames{columnIndex}, bestChildren, NaN, columnIndex, bestGain);
         end
     end
 end
