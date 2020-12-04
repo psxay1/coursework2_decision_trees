@@ -34,22 +34,16 @@ classdef ID3Helpers
             
     methods (Static)
         
-        function tables = splitData(index, tabularData)
+        function [tables, values] = splitData(index, tabularData)
             
             % get unique types of data in column
-            feature = tabularData{:, index};
-            uniqueValues = unique(feature);
-            filteredRowIndices = [];
+            blackList = [];
+            uniqueValues = unique(tabularData{:, index});
+            values = uniqueValues(~ismember(uniqueValues, blackList));
             
             for i=1:height(uniqueValues)
-                for j=1:height(feature) 
-                    if isequal(feature(j,:), uniqueValues(i,:))
-                        filteredRowIndices(end+1) = j;
-                    end
-                end
-                filteredTable = tabularData(filteredRowIndices, :);
+                filteredTable = tabularData(ismember(tabularData{:,index}, uniqueValues(i,:)), :);
                 tables{i} = horzcat(filteredTable);
-                filteredRowIndices = [];
             end
         end
         

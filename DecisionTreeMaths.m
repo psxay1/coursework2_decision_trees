@@ -47,15 +47,19 @@ classdef DecisionTreeMaths
                 % onehotencoding) and for numerical it would double
                 categoricalDataCheck = i==2 || i==3 || i==4 || i==5 || i==7 || i==8 || i==9 || i==11 || i==16;
                 if categoricalDataCheck
-                    children = ID3Helpers.splitData(i, tabularData);
+                    [children, values] = ID3Helpers.splitData(i, tabularData);
                     [informationGain, childEntropies] = DecisionTreeMaths.calculateInformationGain(children);
                     % Get  value of the child attribute with max gain for
                     % categorical data
                     minEntropy = min(childEntropies);
-                    valueIndex = find(childEntropies==minEntropy);
+                    valueIndices = find(childEntropies==minEntropy);
+                    bestSplitValues = values(valueIndices);
+                    if length(childEntropies) == height(bestSplitValues)
+                        bestSplitValues = bestSplitValues(1);
+                    end
                     children = {};
-                    children{1} = horzcat(tabularData(ismember(tabularData.job, valueIndex), :));
-                    children{2} = horzcat(tabularData(~ismember(tabularData.job, valueIndex), :));
+                    children{1} = horzcat(tabularData(ismember(tabularData{:,i}, bestSplitValues), :));
+                    children{2} = horzcat(tabularData(~ismember(tabularData{:,i}, bestSplitValues), :));
                 else
                     children = ID3Helpers.splitNumData(i, tabularData);
                     [informationGain, ~] = DecisionTreeMaths.calculateInformationGain(children);

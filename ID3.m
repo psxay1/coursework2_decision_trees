@@ -18,8 +18,6 @@ classdef ID3
                 end
             end
             
-            
-            
             disp("**********")
             
         % Return a leaf node or a split the data again if not a leaf
