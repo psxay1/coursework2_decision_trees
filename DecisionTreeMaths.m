@@ -37,38 +37,23 @@ classdef DecisionTreeMaths
             
         end
         
-        function tree = chooseAttribute(tabularData)
+        function [tree, blacklist] = chooseAttribute(tabularData, blacklist)
             % This would give the column with best gain
             bestGain = 0;
             columnIndex = 0;
             bestChildren = {};
+            
             for i=1:width(tabularData)-1
-                % class for a categorical column would be table (because of
-                % onehotencoding) and for numerical it would double
-                categoricalDataCheck = i==2 || i==3 || i==4 || i==5 || i==7 || i==8 || i==9 || i==11 || i==16;
-                if categoricalDataCheck
-                    [children, values] = ID3Helpers.splitData(i, tabularData);
-                    [informationGain, childEntropies] = DecisionTreeMaths.calculateInformationGain(children);
-                    % Get  value of the child attribute with max gain for
-                    % categorical data
-                    minEntropy = min(childEntropies);
-                    valueIndices = find(childEntropies==minEntropy);
-                    bestSplitValues = values(valueIndices);
-                    if length(childEntropies) == height(bestSplitValues)
-                        bestSplitValues = bestSplitValues(1);
-                    end
-                    children = {};
-                    children{1} = horzcat(tabularData(ismember(tabularData{:,i}, bestSplitValues), :));
-                    children{2} = horzcat(tabularData(~ismember(tabularData{:,i}, bestSplitValues), :));
-                else
-                    children = ID3Helpers.splitNumData(i, tabularData);
-                    [informationGain, ~] = DecisionTreeMaths.calculateInformationGain(children);
-                    
-                end
+                
+                [informationGain, children, splitValues] = RegressionModel.regression(tabularData, blacklist, i);
+%                 [informationGain, children] = ClassificationModel.classification(tabularData, i);
+                splitValues = [];
+                
                 if informationGain > bestGain
                     bestGain = informationGain;
                     columnIndex = i;
                     bestChildren = children;
+                    blacklist{i} = vertcat(splitValues);
                 end
             end
             tree = DataProcessing.convertToStruct(tabularData.Properties.VariableNames{columnIndex}, bestChildren, NaN, columnIndex, bestGain);

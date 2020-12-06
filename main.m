@@ -8,4 +8,5 @@ bankData = getBankData();
 % entropy/ purest subset
 
 % [children, gain] = DecisionTreeMaths.chooseAttribute(bankData);
-ID3.Tree(bankData);
+blacklist = cell(1,16);
+ID3.Tree(bankData, blacklist);

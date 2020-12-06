@@ -1,7 +1,10 @@
 function data = getBankData()
+    % wine data set(regression)
+%     data = loadBankData('winequality-red.csv');
+%     data = data(1:100, :);
+
+    % bank data set (classification)
 %     bankData = loadBankData('bank-full.csv');
     bankData = loadBankData('bank_new.csv');
-%     testBankData = bankData(1:end/20, :);
-%     data = DataProcessing.bankFeatureProcessing_Class(testBankData);
     data = DataProcessing.bankFeatureProcessing_Class(bankData);
 end

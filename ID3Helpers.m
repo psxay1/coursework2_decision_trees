@@ -34,12 +34,11 @@ classdef ID3Helpers
             
     methods (Static)
         
-        function [tables, values] = splitData(index, tabularData)
+        function [tables, values] = splitData(index, tabularData, blacklist)
             
             % get unique types of data in column
-            blackList = [];
             uniqueValues = unique(tabularData{:, index});
-            values = uniqueValues(~ismember(uniqueValues, blackList));
+            values = uniqueValues(~ismember(uniqueValues, blacklist{index}));
             
             for i=1:height(uniqueValues)
                 filteredTable = tabularData(ismember(tabularData{:,index}, uniqueValues(i,:)), :);
@@ -51,10 +50,10 @@ classdef ID3Helpers
         function tables = splitNumData(index, tabularData)
             
             bestGain = 0;
-            bestLeftChild = array2table(zeros(0,17));
+            bestLeftChild = array2table(zeros(0,width(tabularData)));
             bestLeftChild.Properties.VariableNames = tabularData.Properties.VariableNames;
             
-            bestRightChild = array2table(zeros(0,17));
+            bestRightChild = array2table(zeros(0,width(tabularData)));
             bestRightChild.Properties.VariableNames = tabularData.Properties.VariableNames;
             
             %proessing feature data for getting best numeric split
@@ -101,7 +100,7 @@ classdef ID3Helpers
         end
                 
         function [entropy, n_positive, n_negative]=calculateEntropy(subset)
-            n_positive = height(subset.y(subset.y==1));
+            n_positive = height(subset{:, width(subset)}(subset{:, width(subset)}==ClassificationModel.setPredictionValueForEntropy(subset)));
             n_negative = size(subset, 1) - n_positive;
             entropy = ID3Helpers.entropy(n_positive, n_negative);
             if isnan(entropy)
