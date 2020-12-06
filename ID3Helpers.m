@@ -103,9 +103,6 @@ classdef ID3Helpers
             n_positive = height(subset{:, width(subset)}(subset{:, width(subset)}==ClassificationModel.setPredictionValueForEntropy(subset)));
             n_negative = size(subset, 1) - n_positive;
             entropy = ID3Helpers.entropy(n_positive, n_negative);
-            if isnan(entropy)
-                entropy = 0;
-            end
         end
         
         function entropy = entropy(n_positive, n_negative)
@@ -113,6 +110,9 @@ classdef ID3Helpers
             p_positive = n_positive/totalSize;
             p_negative = n_negative/totalSize;
             entropy = -(p_positive*log2(p_positive) + p_negative*log2(p_negative));
+            if isnan(entropy)
+                entropy = 0;
+            end
         end
     end
 end

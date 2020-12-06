@@ -69,7 +69,7 @@ classdef ID3
            
             labels = child{:, width(child)};
             prediction = mode(labels);
-            leafNode = DataProcessing.convertToStruct("", [], prediction, prediction, tree.threshold);
+            leafNode = DataProcessing.convertToStruct("", [], prediction, tree.attribute, tree.threshold);
         end
     end
 end

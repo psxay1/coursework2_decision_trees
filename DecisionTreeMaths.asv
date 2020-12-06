@@ -48,7 +48,7 @@ classdef DecisionTreeMaths
 %                 [informationGain, children, splitValues] = RegressionModel.regression(tabularData, i);
                 [informationGain, children, splitValues] = ClassificationModel.classification(tabularData, blacklist, i);
                 
-                if informationGain >= bestGain
+                if informationGain > bestGain
                     bestGain = informationGain;
                     columnIndex = i;
                     bestChildren = children;
