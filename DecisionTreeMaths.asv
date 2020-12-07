@@ -37,7 +37,7 @@ classdef DecisionTreeMaths
             
         end
         
-        function [tree, blacklist] = chooseAttribute(tabularData, blacklist)
+        function [node, bestSplit, blacklist] = chooseAttribute(tabularData, blacklist)
             % This would give the column with best gain
             bestGain = 0;
             columnIndex = 0;
@@ -48,7 +48,7 @@ classdef DecisionTreeMaths
 %                 [informationGain, children, splitValues] = RegressionModel.regression(tabularData, i);
                 [informationGain, children, splitValues] = ClassificationModel.classification(tabularData, blacklist, i);
                 
-                if informationGain > bestGain
+                if informationGain >= bestGain
                     bestGain = informationGain;
                     columnIndex = i;
                     bestChildren = children;
@@ -56,7 +56,10 @@ classdef DecisionTreeMaths
                 end
             end
             disp(columnIndex);
-            tree = DataProcessing.convertToStruct(tabularData.Properties.VariableNames{columnIndex}, bestChildren, NaN, columnIndex, bestGain);
+            children = bestChildren;
+            splitColumn = columnIndex;
+            bestSplit = DataProcessing.convertToStruct(tabularData.Properties.VariableNames{columnIndex}, bestChildren, NaN, columnIndex, bestGain, black);
+            node = Node.createNode(tabularData, tabularData.Properties.VariableNames{columnIndex}, [], bestChildren, NaN, columnIndex, bestGain, blacklist);
         end
     end
 end

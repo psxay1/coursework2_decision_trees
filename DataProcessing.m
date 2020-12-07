@@ -47,12 +47,12 @@ classdef DataProcessing
 %             data.poutcome = DataProcessing.matrixEncoding(data.poutcome);
         end
         
-        function tree = convertToStruct(op, kids, prediction, attribute, threshold)
-            tree.op = op;
-            tree.kids = kids;
-            tree.prediction = prediction;
-            tree.attribute = attribute;
-            tree.threshold = threshold;
+        function splitObj = convertToStruct(op, kids, attribute, threshold, blacklist)
+            splitObj.op = op;
+            splitObj.kids = kids;
+            splitObj.attribute = attribute;
+            splitObj.threshold = threshold;
+            splitObj.blacklist = blacklist;
         end
     end
 end

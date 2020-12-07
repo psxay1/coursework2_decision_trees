@@ -10,6 +10,8 @@ classdef ID3
             
             tree = tree.addChildren(bestSplit);
             
+            
+            
             lChild = {};
             rChild = {};
             

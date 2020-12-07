@@ -9,4 +9,9 @@ bankData = getBankData();
 
 % [children, gain] = DecisionTreeMaths.chooseAttribute(bankData);
 blacklist = cell(1,16);
-ID3.Tree(bankData, blacklist);
+% node = Node();
+% [node, tree] = node.setParent(bankData);
+tree = DecisionTree();
+tree = tree.setTreeRoot(bankData);
+% tree = struct(tree);
+ID3.Tree(bankData, blacklist, tree);

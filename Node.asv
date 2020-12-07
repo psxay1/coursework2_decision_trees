@@ -1,0 +1,65 @@
+classdef Node
+    
+    properties
+%         node
+        root
+        op
+        kids
+        prediction
+        attribute
+        threshold
+    end
+    
+    properties (SetAccess ='private', GetAccess = 'private')
+       children
+    end
+    
+    % static private methods
+    methods (Access = 'private', Static)
+        
+        function children = setChildren(children)
+            children = Children();
+            
+        end
+        
+    end
+    
+    % Static methods
+    methods (Static)
+        
+        function node = createNode(root, op, kids, children, prediction, attribute, threshold)
+           
+            node = Node();
+            node.root = root;
+            node.op = op;
+            node.kids = kids;
+            node.prediction = prediction;
+            node.attribute = attribute;
+            node.threshold = threshold;
+            node.children = Node.setChildren(children);
+            node = struct(node);
+        end
+        
+    end
+    
+    methods
+        
+        function obj = Node()
+            
+        end
+        
+    end
+    
+    % public methods
+%     methods
+%         
+%         function obj = Node()
+%             obj.node = struct('root', [], 'op', "", 'kids', [], 'prediction', NaN, 'threshold', NaN);
+%         end
+%         
+%         function [obj, node] = setParent(obj, parentNode)
+%             obj.node.root = parentNode;
+%             node = obj.node;
+%         end
+%     end
+end
