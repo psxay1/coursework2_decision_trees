@@ -27,10 +27,12 @@ classdef DecisionTree
             for i=1:length(children)
                 if obj.checkForLeaf(children{i}, kidsObject.blacklist, kidsObject.attribute) == true
                     leafNode = Node.createNode([], "", [], obj.getPrediction(children{i}), kidsObject.attribute, kidsObject.threshold);
+                    % conversion to struct as per cw pdf
                     leafNode = struct(leafNode);
                     obj.node.kids{end+1} = leafNode;
                 else
                     internalNode = Node.createNode(children{i}, kidsObject.op, [], NaN, kidsObject.attribute, kidsObject.threshold);
+                    % conversion to struct as per cw pdf
                     internalNode = struct(internalNode);
                     obj.node.kids{end+1} = internalNode;
                 end
