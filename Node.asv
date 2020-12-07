@@ -1,8 +1,7 @@
 classdef Node
     
     properties
-%         node
-        root
+        % node attributes
         op
         kids
         prediction
@@ -11,15 +10,13 @@ classdef Node
     end
     
     properties (SetAccess ='private', GetAccess = 'private')
-       children
+        % hold the table for the current node
+       data
     end
     
-    % static private methods
-    methods (Access = 'private', Static)
-        
-        function children = setChildren(children)
-            children = Children();
-            
+    methods
+        % constructor
+        function obj = Node()
         end
         
     end
@@ -27,25 +24,27 @@ classdef Node
     % Static methods
     methods (Static)
         
-        function node = createNode(root, op, kids, children, prediction, attribute, threshold)
-           
+        % create a new node fo
+        function node = createNode(data, op, kids, prediction, attribute, threshold)
+            
             node = Node();
-            node.root = root;
+            node.data = data;
             node.op = op;
             node.kids = kids;
             node.prediction = prediction;
             node.attribute = attribute;
             node.threshold = threshold;
-            node.children = Node.setChildren(children);
-            node = struct(node);
+            node.data = data;
+%             node.children = Node.setChildren(children);
         end
         
     end
     
-    methods
+    % static private methods
+    methods (Access = 'private', Static)
         
-        function obj = Node()
-            
+        function children = setChildren(childNodes)
+            children = Children(childNodes);
         end
         
     end

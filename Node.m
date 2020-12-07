@@ -1,7 +1,7 @@
 classdef Node
     
     properties
-%         node
+        % current node attributes
         op
         kids
         prediction
@@ -10,6 +10,7 @@ classdef Node
     end
     
     properties (SetAccess ='private', GetAccess = 'private')
+        % hold the table data for the current node
        data
     end
     
@@ -23,6 +24,7 @@ classdef Node
     % Static methods
     methods (Static)
         
+        % creating a new node object
         function node = createNode(data, op, kids, prediction, attribute, threshold)
             
             node = Node();

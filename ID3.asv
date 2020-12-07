@@ -5,18 +5,19 @@ classdef ID3
     
     methods (Static)
         
-        function Tree(data, blacklist, tree)
+        function tree = Tree(data, blacklist, tree)
             bestSplit = DecisionTreeMaths.chooseAttribute(data, blacklist);
             
             tree = tree.addChildren(bestSplit);
             
-            
+            ID3.Tree(
             
             lChild = {};
             rChild = {};
             
             lChild = bestSplit.kids{1};
             rChild = bestSplit.kids{2};
+            
             
         % Return a leaf node or a split the data again if not a leaf
         % node

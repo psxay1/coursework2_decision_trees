@@ -7,11 +7,12 @@ bankData = getBankData();
 % split on the best one by selecting the best information gain/ lowest
 % entropy/ purest subset
 
-% [children, gain] = DecisionTreeMaths.chooseAttribute(bankData);
+
 blacklist = cell(1,16);
-% node = Node();
-% [node, tree] = node.setParent(bankData);
+
+% creating root node with initiall
 tree = DecisionTree();
 tree = tree.setTreeRoot(bankData);
+
 % tree = struct(tree);
 ID3.Tree(bankData, blacklist, tree);

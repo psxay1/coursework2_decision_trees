@@ -6,19 +6,34 @@ classdef ID3
     methods (Static)
         
         function Tree(data, blacklist, tree)
+            % bestSplit = 2 children, best information gain, the name and
+            % index of the column on which the data was split, updated
+            % blacklist
             bestSplit = DecisionTreeMaths.chooseAttribute(data, blacklist);
             
             tree = tree.addChildren(bestSplit);
             
+            
+            
+            
+            
+            
+            
+            % this code can be ignored after completing implementation of
+            % tree structure
+            %
+            %
+            %
+            %
+            %
+            %
+            % All this is done inside DecisionTree.m
             lChild = {};
             rChild = {};
             
             lChild = bestSplit.kids{1};
             rChild = bestSplit.kids{2};
             
-        % Return a leaf node or a split the data again if not a leaf
-        % node
-        
             if ID3.checkForLeaf(lChild) == true || ID3.checkForBlacklists(bestSplit, lChild, blacklist) == true
                 if ID3.checkForBlacklists(bestSplit, lChild, blacklist) == true
                     leafNode = ID3.getLeafNode(bestSplit, lChild);

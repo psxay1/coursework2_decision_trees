@@ -7,20 +7,18 @@ classdef DecisionTree
     
     methods
         
+        % constructor
         function obj = DecisionTree()
             obj.node = struct(obj.node);
         end
         
-        function obj = setTreeRoot(obj, root)
-            obj.node.root = root;
+        % add table data to current node in tree
+        function obj = setTreeRoot(obj, data)
+            obj.node.data = data;
         end
         
-        function obj = updateTree(obj, attributeObj)
-            obj.node.op = attributeObj.op;
-            obj.node.attribute = attributeObj.attribute;
-            obj.node.threshold = attributeObj.threshold;
-        end
         
+        % adding children to the current node in the tree
         function tree = addChildren(obj, kidsObject)
             children = kidsObject.kids;
             
@@ -32,7 +30,7 @@ classdef DecisionTree
                     leafNode = struct(leafNode);
                     obj.node.kids{end+1} = leafNode;
                 else
-                    internalNode = Node.createNode(obj.node.root, kidsObject.op, [], NaN, kidsObject.attribute, kidsObject.threshold);
+                    internalNode = Node.createNode(children{i}, kidsObject.op, [], NaN, kidsObject.attribute, kidsObject.threshold);
                     internalNode = struct(internalNode);
                     obj.node.kids{end+1} = internalNode;
                 end
@@ -66,16 +64,14 @@ classdef DecisionTree
 
     methods (Access = 'private')
         
+        % update properties of the current node in the tree
         function obj = updateCurrentNode(obj, kidsObject)
             obj.node.op = kidsObject.op;
             obj.node.attribute = kidsObject.attribute;
             obj.node.threshold = kidsObject.threshold;
         end
         
-        function insert(obj, node)
-            
-        end
-        
+        % checking for leaf node
         function isLeafNode = checkForLeaf(~, child, blacklist, attribute)
             labels = child{:, width(child)};
             uniqueValues = unique(labels);
@@ -95,13 +91,15 @@ classdef DecisionTree
             isLeafNode = isLeafNode || isPartOfBlacklist;
         end
         
+        % getting predicted value for leaf nodes
         function prediction = getPrediction(~, child)
             labels = child{:, width(child)};
             prediction = mode(labels);
         end
         
     end
-
+    
+    % static methods in the class would be defined here
     methods (Static)
         
         
